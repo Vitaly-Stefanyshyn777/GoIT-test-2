@@ -1,7 +1,8 @@
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/auth/operation";
 
 function RegisterForm() {
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handelSumbit = (event) => {
     event.preventDefault();
     const { name, email, password } = event.target.elements;
@@ -10,11 +11,13 @@ function RegisterForm() {
       email: email.value,
       password: password.value,
     });
-    //   dispatch({
-    //     name: name.value,
-    //     email: email.value,
-    //     password: password.value,
-    //   });
+    dispatch(
+      register({
+        name: name.value,
+        email: email.value,
+        password: password.value,
+      })
+    );
   };
   return (
     <div>

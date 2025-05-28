@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { build } from "vite";
+import { login, refreshUser, register } from "./operation";
 
 const initialState = {
   user: {
@@ -23,28 +23,46 @@ const slise = createSlice({
         state.isErro = false;
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.token = action.paylaud.token;
-        state.user = action.paylaud.user;
-        state.isLoading = true;
+        state.token = action.payload.token;
+        state.user = action.payload.user;
+        state.isLoading = false;
+        state.isLoginIn = true;
         state.isErro = false;
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
-        state.isErro = action.paylaud;
+        state.isErro = action.payload;
       })
-      .addCase(register.pending, (state) => {
+      .addCase(login.pending, (state) => {
         state.isLoading = true;
         state.isErro = false;
       })
-      .addCase(register.fulfilled, (state, action) => {
-        state.token = action.paylaud.token;
-        state.user = action.paylaud.user;
-        state.isLoading = true;
-        state.isErro = false;
-      })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
+        state.token = action.payload.token;
+        state.user = action.payload.user;
         state.isLoading = false;
-        state.isErro = action.paylaud;
+        state.isLoginIn = true;
+        state.isErro = false;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isErro = action.payload;
+      })
+      .addCase(refreshUser.pending, (state) => {
+        state.isErro = false;
+        state.isRefresh = true;
+      })
+      .addCase(refreshUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isErro = false;
+        state.isLoginIn = true;
+        state.isRefresh = false;
+      })
+      .addCase(refreshUser.rejected, (state, action) => {
+        state.isErro = action.payload;
+        state.isRefresh = false;
       });
   },
 });
+
+export const authReducer = slise.reducer;
